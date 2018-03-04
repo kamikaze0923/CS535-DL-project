@@ -51,12 +51,12 @@ N = 100
 x = np.empty((N, L), 'int64')
 x[:] = np.array(range(L)) + np.random.randint(-4 * T, 4 * T, N).reshape(N, 1)
 data = np.sin(x / 1.0 / T).astype('float64')
-torch.save(data, open('traindata.pt', 'wb'))
+# torch.save(data, open('traindata.pt', 'wb'))
 
 
 
 # load data and make training set
-data = torch.load('traindata.pt')
+# data = torch.load('traindata.pt')
 input = Variable(torch.from_numpy(data[3:, :-1]), requires_grad=False)
 target = Variable(torch.from_numpy(data[3:, 1:]), requires_grad=False)
 test_input = Variable(torch.from_numpy(data[:3, :-1]), requires_grad=False)

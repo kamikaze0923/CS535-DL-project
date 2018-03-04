@@ -32,5 +32,5 @@ with open("prices.csv", "r") as f:
         if date != pre_date:
             diff = diff_day(date,pre_date)
             if not (diff == 3 or diff == 1):
-                print(str(diff) + ' pre: ' + pre_date + ' new: ' + date)
+                print(str(diff) + ' days intervals  pre: ' + pre_date + ' new: ' + date)
             pre_date = date

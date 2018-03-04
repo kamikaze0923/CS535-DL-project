@@ -15,8 +15,9 @@ with open("prices.csv", "r") as f:
             check_cnt = len(stock_list)
             pre_date = date
         if symbol not in stock_list:
-            #print(date + ' new stock: ' + symbol)
-            stock_list.append(symbol)
+            if date != '1/4/10':
+                print(date + ' new stock: ' + symbol)
+                stock_list.append(symbol)
         else:
             check_cnt -= 1
 
