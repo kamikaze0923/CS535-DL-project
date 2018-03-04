@@ -61,6 +61,7 @@ input = Variable(torch.from_numpy(data[3:, :-1]), requires_grad=False)
 target = Variable(torch.from_numpy(data[3:, 1:]), requires_grad=False)
 test_input = Variable(torch.from_numpy(data[:3, :-1]), requires_grad=False)
 test_target = Variable(torch.from_numpy(data[:3, 1:]), requires_grad=False)
+
 # build the model
 seq = Sequence()
 seq.double()
