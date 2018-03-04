@@ -3,7 +3,9 @@ import csv
 stock_list = []
 pre_date = ''
 check_cnt = 0
-with open("prices.csv", "r") as f:
+
+with open('cropped_prices.csv', 'r') as f:
+#with open('prices.csv', 'r') as f:
     reader = csv.reader(f)
     head_strings = next(reader)
     for i, line in enumerate(reader):
@@ -15,9 +17,9 @@ with open("prices.csv", "r") as f:
             check_cnt = len(stock_list)
             pre_date = date
         if symbol not in stock_list:
-            if date != '1/4/10':
+            if date != '1/2/13':
                 print(date + ' new stock: ' + symbol)
-                stock_list.append(symbol)
+            stock_list.append(symbol)
         else:
             check_cnt -= 1
 
