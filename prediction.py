@@ -1,6 +1,7 @@
 import csv
 import numpy
 
+
 with open('cropped_prices.csv', 'r') as f:
     reader = csv.reader(f)
     head_strings = next(reader)
