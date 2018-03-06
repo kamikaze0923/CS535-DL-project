@@ -76,7 +76,7 @@ for i in range(15):
         optimizer.zero_grad()
         out = seq(input)
         loss = criterion(out, target)
-        print('loss:', loss.data[0])
+        print('lossssss:', loss.data[0])
         loss.backward()
         return loss
     optimizer.step(closure)
@@ -85,7 +85,7 @@ for i in range(15):
     pred = seq(test_input, future = future)
     loss = criterion(pred[:, :-future], test_target)
     print('test loss:', loss.data)
-    y = pred.data.cpu().numpy()
+    y = pred.data.numpy()
 
 
     def draw(yi, color):
