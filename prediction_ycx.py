@@ -46,8 +46,6 @@ std = np.std(data,axis=0)
 data_nor = (data - mean)/std
 data_nor = data_nor.transpose()
 data_nor = data_nor[:,600:]
-mean = mean[600:]
-std = std[600:]
 
 future = 50
 input = Variable(torch.from_numpy(data_nor[250:, :-future]), requires_grad=False).cuda()
@@ -74,7 +72,7 @@ optimizer = optim.LBFGS(seq.parameters(), lr=0.1)
 
 
 #begin to train
-for i in range(20):
+for i in range(1):
     print('STEP: ', i)
     def closure():
         optimizer.zero_grad()
