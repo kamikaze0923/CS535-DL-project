@@ -46,6 +46,8 @@ std = np.std(data,axis=0)
 data_nor = (data - mean)/std
 data_nor = data_nor.transpose()
 data_nor = data_nor[:,600:]
+mean = mean[600:]
+std = std[600:]
 
 future = 50
 input = Variable(torch.from_numpy(data_nor[250:, :-future]), requires_grad=False).cuda()
@@ -97,9 +99,9 @@ for i in range(future):
     y = pred.data.cpu().numpy()
     l = std.size
     if i == 0:
-        pre = y[:,-1:]
+        pre = y[:,-1:] * std[:250].reshape(250,1) + mean[:250].reshape(250,1)
     else:
-        pre = np.concatenate((pre,y[:,-1:]),axis=1)
+        pre = np.concatenate((pre,y[:,-1:]* std[:250].reshape(250,1) + mean[:250].reshape(250,1)),axis=1)
 
 np.savetxt("result_ycx.csv", pre, delimiter=",")
 
