@@ -8,8 +8,6 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 
-
-
 class Sequence(nn.Module):
     def __init__(self):
         super(Sequence, self).__init__()
@@ -40,8 +38,6 @@ class Sequence(nn.Module):
         return outputs
 
 
-
-
 data = np.genfromtxt('./data/data.csv',delimiter=',',dtype='float32',usecols=[i*5+1 for i in range(483)])
 mean = np.mean(data,axis=0)
 std = np.std(data,axis=0)
@@ -62,12 +58,12 @@ test_target = Variable(torch.from_numpy(data_nor[:test_num, 1:-future + 1]), req
 seq = Sequence().cuda()
 criterion = nn.MSELoss()
 
-pretrained_dict = torch.load('mytraining.pth')
-model_dict = seq.state_dict()
-for i in model_dict:
-    if i in pretrained_dict:
-        model_dict[i] = pretrained_dict[i]
-seq.load_state_dict(model_dict)
+# pretrained_dict = torch.load('mytraining.pth')
+# model_dict = seq.state_dict()
+# for i in model_dict:
+#     if i in pretrained_dict:
+#         model_dict[i] = pretrained_dict[i]
+# seq.load_state_dict(model_dict)
 
 
 # use LBFGS as optimizer since we can load the whole data to train
@@ -75,7 +71,7 @@ optimizer = optim.LBFGS(seq.parameters(), lr=0.1)
 
 
 #begin to train
-for i in range(2):
+for i in range(30):
     print('STEP: ', i)
     def closure():
         optimizer.zero_grad()
@@ -99,11 +95,19 @@ for i in range(future):
     ahead = 10
     pred = seq(input, future = ahead)
     y = pred.data.cpu().numpy()
-    l = std.size
+    x = np.array(np.arange(10))
+    A = np.vstack([x, np.ones(len(x))]).T
+    k,b = np.linalg.lstsq(A, y[:,-ahead:].T)[0]
+    k = k.reshape((test_num,1))
+
+
     if i == 0:
+        indicator = k
         pre = y[:,-ahead:] * std[:test_num].reshape(test_num,1) + mean[:test_num].reshape(test_num,1)
     elif i%ahead == 0:
         pre = np.concatenate((pre,y[:,-ahead:]* std[:test_num].reshape(test_num,1) + mean[:test_num].reshape(test_num,1)),axis=1)
+    indicator = np.concatenate((indicator,k),axis=1)
 
 np.savetxt("result_ycx.csv", pre, delimiter=",")
+np.savetxt("indicator_ycx.csv",indicator,delimiter=',')
 
